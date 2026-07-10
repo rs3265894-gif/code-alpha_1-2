@@ -1,0 +1,43 @@
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv("books_dataset.csv")
+
+print("=" * 50)
+print("  TASK 2: Exploratory Data Analysis (EDA)")
+print("=" * 50)
+
+print("\n1. Dataset Shape:")
+print(f"   Rows: {df.shape[0]}, Columns: {df.shape[1]}")
+
+print("\n2. Column Info:")
+print(df.dtypes)
+
+print("\n3. First 5 Rows:")
+print(df.head())
+
+print("\n4. Statistical Summary:")
+print(df.describe())
+
+print("\n5. Missing Values:")
+print(df.isnull().sum())
+
+print("\n6. Rating Distribution:")
+print(df["Rating"].value_counts().sort_index())
+
+print("\n7. Availability Count:")
+print(df["Availability"].value_counts())
+
+print("\n8. Price Analysis:")
+print(f"   Min Price:  £{df['Price_GBP'].min()}")
+print(f"   Max Price:  £{df['Price_GBP'].max()}")
+print(f"   Avg Price:  £{df['Price_GBP'].mean():.2f}")
+print(f"   Median:     £{df['Price_GBP'].median()}")
+
+print("\n9. Top 5 Most Expensive Books:")
+print(df.nlargest(5, "Price_GBP")[["Title","Price_GBP","Rating"]])
+
+print("\n10. Top 5 Highest Rated Books:")
+print(df[df["Rating"]==5][["Title","Price_GBP"]].head())
+
+print("\n✅ EDA Complete!")
