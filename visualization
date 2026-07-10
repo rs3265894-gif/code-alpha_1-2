@@ -1,0 +1,52 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv("books_dataset.csv")
+sns.set_theme(style="darkgrid")
+
+fig, axes = plt.subplots(2, 3, figsize=(15, 10))
+fig.suptitle("CodeAlpha - Book Data Analysis", fontsize=16, fontweight="bold")
+
+# Chart 1: Rating Distribution
+sns.countplot(x="Rating", data=df, ax=axes[0,0], palette="Blues")
+axes[0,0].set_title("Rating Distribution")
+axes[0,0].set_xlabel("Rating (1-5)")
+axes[0,0].set_ylabel("Number of Books")
+
+# Chart 2: Price Distribution
+axes[0,1].hist(df["Price_GBP"], bins=15, color="coral", edgecolor="black")
+axes[0,1].set_title("Price Distribution")
+axes[0,1].set_xlabel("Price (£)")
+axes[0,1].set_ylabel("Frequency")
+
+# Chart 3: Avg Price per Rating
+avg_price = df.groupby("Rating")["Price_GBP"].mean()
+axes[0,2].bar(avg_price.index, avg_price.values, color="green", edgecolor="black")
+axes[0,2].set_title("Avg Price per Rating")
+axes[0,2].set_xlabel("Rating")
+axes[0,2].set_ylabel("Avg Price (£)")
+
+# Chart 4: Availability Pie Chart
+df["Availability"].value_counts().plot.pie(
+    ax=axes[1,0], autopct="%1.1f%%",
+    colors=["lightgreen","salmon"], startangle=90)
+axes[1,0].set_title("Availability")
+axes[1,0].set_ylabel("")
+
+# Chart 5: Price vs Rating Scatter
+axes[1,1].scatter(df["Rating"], df["Price_GBP"], color="purple", alpha=0.6)
+axes[1,1].set_title("Price vs Rating")
+axes[1,1].set_xlabel("Rating")
+axes[1,1].set_ylabel("Price (£)")
+
+# Chart 6: Top 10 Expensive Books
+top10 = df.nlargest(10, "Price_GBP")
+axes[1,2].barh(top10["Title"].str[:25], top10["Price_GBP"], color="orange")
+axes[1,2].set_title("Top 10 Expensive Books")
+axes[1,2].set_xlabel("Price (£)")
+
+plt.tight_layout()
+plt.savefig("book_analysis.png", dpi=150, bbox_inches="tight")
+plt.show()
+print("✅ Task 3 Complete! Charts saved as book_analysis.png")
